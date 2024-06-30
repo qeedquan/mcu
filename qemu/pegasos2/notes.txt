@@ -1,0 +1,49 @@
+*** System
+https://genesi.company/products/pegasos
+
+Micro ATX form factor (236mm x 172mm)
+IEEE 1275 Firmware/boot interface
+Marvell Discovery II (MV64361) System Controller
+G3 or G4 Power Architecture CPU
+184-pin 266MHz DDR RAM sockets
+1x AGP slot
+3x PCI slots with riser connector
+2x ATA100 IDE Channels
+3x IEEE1394 ports (400Mbit)
+3x USB 1.1 ports (12Mbit)
+Gigabit and 10/100 Ethernet
+AC97 Audio Subsystem
+  
+Stereo audio
+Microphone
+S/PDIF optical output
+PC Gameport/MIDI
+  
+IrDA, Serial (RS232), Parallel (IEEE1284) and PS/2 (Keyboard & Mouse)
+Floppy drive connector
+
+*** Firmware
+Use Open Firmware compliant ROM based on SmartFirmware
+http://web.archive.org/web/20071021223056/http://www.bplan-gmbh.de/up050404/up050404
+
+To get the ROM out of the image:
+tail -c +85581 up050404 | head -c 524288 > pegasos2.rom
+
+*** Exception vectors
+Exception vectors are stored at [0x0, 0x3000]
+
+*** Booting
+QEMU uses vof.bin (Open Firmware Image) if the pegasos2.rom is not given via -bios.
+vof.bin is packaged as part of a QEMU install.
+
+0xfff00000 - ROM start loading location (Does not execute at this location on startup)
+0xfff00100 - ROM start execution location
+
+0xfe000000 - PCI IO Space (This is a vt82c686b southbridge for serial, rtc, etc)
+0xf1000000 - Marvell SOC registers
+
+On bootup, we can immediately use PCI IO Space without any setup
+
+*** Building
+binutils target is elf32-powerpc
+

@@ -1,0 +1,30 @@
+*** Terminology
+
+Posted Writes - A write transaction that does not wait for a write completion response to indicate success or failure of the write transaction.
+Non-Posted Writes - A non-posted write requires that a bus transaction responds with a write completion response to indicate success or failure of the transaction.
+In reference to memory bus accesses, a posted write is referred to as a posted memory write (PMW).
+
+*** Endian
+PCI bus is little endian. For processors that is big endian like PPC, it will have to swap the write values for it to show up correctly when writing to the PCI registers.
+
+*** Config Header
+Each PCI device will have a configuration header that has ID/Enable/Interrupt Enable/etc.
+They are usually accessed via the PCI configuration read/write registers on a SOC (ARM/PPC/etc).
+For x86, they can be accessed using inb/outb to the write port.
+
+Registers:
+Command -
+   Interrupt Disable (BIT10):
+       Disable interrupt if set, if this is cleared the device can trigger an interrupt.
+	   If the device triggers an interrupt but no device driver to handle it, it can trigger an interrupt storm which can makes the board hang, so for devices without a driver, set this bit.
+   Bus Master (BIT2):
+       If set to 1 the device can behave as a bus master; otherwise, the device can not generate PCI accesses.
+   Memory Space (BIT1):
+       If set to 1 the device can respond to Memory Space accesses; otherwise, the device's response is disabled.
+   IOSPACE (BIT0)
+       If set to 1 the device can respond to I/O Space accesses; otherwise, the device's response is disabled.
+
+Status -
+   Interrupt Status (BIT3)
+      Represents the state of the device's INTx# signal. If set to 1 and bit 10 of the Command register (Interrupt Disable bit) is set to 0 the signal will be asserted; otherwise, the signal will be ignored.
+

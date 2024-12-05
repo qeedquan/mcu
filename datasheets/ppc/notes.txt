@@ -1,0 +1,109 @@
+*** PPC Versions
+
+PPC603/PPC604 are used G3/G4 era MACs (PPC7400 should be backward compatible with it)
+PPCE500 is designed by Freescale, compatible with Power ISA v2.03
+
+*** Registers
+GPR [0, 31]
+
+GPR0 - Function Prologues
+GPR1 - Stack Pointer
+GPR2 - Table of Contents (TOC) pointer
+GPR3, GPR10 - Function arguments
+
+Special Purpose Register (SPR)
+The SPR registers are defined by numbering, symbolic name assignment for the numbers are given to make it easier to remember
+
+LR	volatile	Used as a branch target address or holds a return address.
+CTR	volatile	Used for loop count decrement and branching.
+XER	volatile	Fixed-point exception register.
+FPSCR	volatile	Floating-point exception register.
+CR0, CR1	volatile	Condition-register bits.
+CR2, CR3, CR4	nonvolatile	Condition-register bits.
+CR5, CR6, CR7	volatile	Condition-register bits.
+
+BAT - Controls address translation if address translation is enabled, can be 64 bit or 32 bit wide for each register
+
+*** Memory Storage Modes
+W - Write through - when updating memory, write both to cache and storage location at the same time, make it easier to keep things in sync, but slow
+I - Cache Inhibit - Ignore caches
+M - Memory Coherence - Force memory coherence on writes
+G - Guarded Memory - prevents speculative execution (prefetching), not applicable to BAT
+
+*** Memory Access
+Segment Registers and BAT Registers accessed in parallel, with BAT taking precedence if both translations found valid
+If neither lookup is found to be valid, a Page Fault Interrupt is generated and the OS must deal with the problem
+
+*** Port IO
+PowerPC just use regular stores/loads instructions for (in/out) like stbx or ldbx with a sync instead of a special instruction like X86
+
+*** Exception table
+If the BAT is enabled for the instruction (IBAT) then need to set exception handler for instruction miss
+If the BAT is enabled for the data (DBAT) then need to set up handler for load/store misses
+
+The hash table instruction miss can also generate an exception
+
+*** Instructions
+mfspr
+Copies the contents of a special-purpose register into a general-purpose register.
+
+mtspr
+Copies the contents of a general-purpose register into a special-purpose register.
+
+isync
+hwsync
+eieio
+Fencing instructions
+
+sc
+System call
+
+
+add  rD, rA, rB	Add	CR0 (LT, GT, EQ, SO)	rD ¬ rA + rB
+addi  rD, rA, value	Add immediate	None	rD ¬ rA + value
+addis  rD, rA, value	Add immediate shifted left by 16 bits	None	rD ¬ rA + (value << 16)
+and  rA, rS, rB	AND	None	rA ¬ rS & rB
+andi.  rA, rS, value	AND Immediate	CR0 (LT, GT, EQ, SO)	rA ¬ rS & value
+andis.  rA, rS, value	AND Immediate shifted left by 16 bits	CR0 (LT, GT, EQ, SO)	rA ¬ rS & (value << 16)
+b  target_addr	Branch Always	None	Branch to target_addr
+ble  target_addr	Branch if less than or equal to (LT or EQ flags of CR0 set)	None	Branch to target_addr if LT = 1 or EQ = 1
+blt  target_addr	Branch if less than (LT of CR0 set)	None	Branch to target_addr if LT = 1
+beq  target_addr	Branch if equal (EQ of CR0 set)	None	Branch to target_addr if EQ = 1
+bge  target_addr	Branch if greater than or equal to (GT or EQ of CR0 set)	None	Branch to target_addr if GT = 1 or EQ = 1
+bgt  target_addr	Branch if greater than (GT of CR0 set)	None	Branch to target_addr if GT = 1
+blr  target_addr	Branch to LR (Link Register)	None	Branch and link to target_addr
+bne  target_addr	Branch if not equal (EQ of CR0 not set)	None	Branch to target_addr if EQ = 0
+cmpw  rA, rB	Compare Word	CR0 (LT, GT, EQ, SO)	rA - rB
+cmpwi  rA, value	Compare Word Immediate	CR0 (LT, GT, EQ, SO)	rA - value
+la  rD, label	Load Address based upon offset value	None	rD ¬ label
+lbz  rD, d(rA)	Load Byte and Zero	None	rD ¬ m[rA + d]
+lbzx  rD, rA, rB	Load Byte and Zero Indexed	None	rD ¬ m[rA + rB]
+lhz  rD, d(rA)	Load Half Word and Zero	None	rD ¬ M[rA +d]15..0
+lhzx  rD, rA, rB	Load Half Word and Zero Indexed	None	rD ¬ M[rA +rB]15..0
+li  rA, value	Load immediate	None	rA ¬ value
+lis  rA, value	Load immediate shifted left by 16 bits	None	rA ¬ (value << 16)
+lwz  rD, d(rA)	Load Word and Zero	None	rD ¬ M[rA + d]
+lwzx  rD, rA, rB	Load Word and Zero Indexed	None	rD ¬ M[rA + rB]
+mr  rA, rS	Move Register	None	rA ¬ rS
+not  rA, rS	Complement Register (invert)	None	rA ¬ ~rS
+ori  rA, rS, value	OR Immediate	None	rA ¬ rS | value
+oris  rA, rS, value	OR Immediate shifted left by 16 bits	None	rA ¬ rS | (value << 16)
+slwi  rA, rS, value	Shift Left Immediate	None	rA ¬ (rS << value)
+srwi  rA, rS, value	Shift Right Immediate	None	rA ¬ (rS >> value)
+stb  rS, d(rA)	Store Byte	None	m[rA + d] ¬ rS7..0
+stbx  rS, rA, rB	Store Byte Indexed	None	m[rA + rB] ¬ rS7..0
+sth  rS, d(rA)	Store Half Word	None	M[rA + d]15..0 ¬ rS15..0
+sthx  rS, rA, rB	Store Half Word Indexed	None	M[rA + rB]15..0 ¬ rS15..0
+stw  rS, d(rA)	Store Word	None	M[rA + d] ¬ rS
+stwx  rS, rA, rB	Store Word Indexed	None	M[rA + rB] ¬ rS
+sub  rD, rA, rB	Subtract	None	rD ¬ rA - rB
+subi  rD, rA, value	Subtract Immediate	None	rD ¬ rA - value
+subis  rD, rA, value	Subtract Immediate shifted left by 16 bits	None	rD ¬ rA - (value << 16)
+
+*** Cache flushing/invalidation
+# Allows a program to copy the contents of a modified block to main memory.
+dcbst
+
+# Allows a program to request a cache block fetch before it is actually needed by the program.
+dcbt
+

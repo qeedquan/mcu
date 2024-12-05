@@ -1,0 +1,11 @@
+***Wiring for push button state
+
+If you hook up a wire into a push button and then into a digital/analog
+pin for measuring the state of the button, you need to make sure that
+the wire is on the same strip as the button, or else if you make it
+connected indirectly via a resistor on that strip and then the wire on another strip
+connected to the push button it will read the state correctly (pulled down by resistor)
+
+***Push button on 5V and GND
+If you wire 5V and GND to a push button and try to use that button, that button will
+act as a circuit breaker in the connection and can cause the Arduino to reset itself.

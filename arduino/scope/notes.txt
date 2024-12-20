@@ -1,0 +1,11 @@
+https://www.agner.org/digital/digital_electronics_agner_fog.pdf
+----
+The input of a MOSFET digital circuit is controlled by the voltage at the input, not the current.
+The input resistance of a MOSFET is extremely high and the input current is virtually zero.
+While an ordinary switch can turn on and off the current for a lamp,
+it cannot turn on and off the input of a MOSFET circuit because there is no current.
+An input that is not connected to anything will have a random and unpredictable voltage that
+is influenced by even the smallest amount of electromagnetic noise.
+If you connect a switch to an input then you need a pull-down resistor to make sure the input voltage is low when the switch is off.
+The value of the resistor is not important, for pull-up resistor, connect it to Vcc instead of Gnd (that makes it a pull-down resistor otherwise)
+

@@ -1,0 +1,20 @@
+*** Interrup controllers
+
+ARM made several interrupt controllers
+
+VIC/NVIC (PL190)
+AITC
+GIC (PL390) (V1/V2/V3)
+
+VIC used in:
+BCM (Raspberry PI 2 era)
+
+NVIC used in:
+Cortex-M0
+Cortex-M3
+
+GIC used in:
+Cortex-R5 (PL-390)
+Cortex-A15
+Cortex-A53
+

@@ -1,0 +1,68 @@
+*** APB
+
+The Advanced Peripheral Bus (APB) (Part of AMBA)
+
+The APB is designed to be a secondary bus to ASB, connected by a bridge (which limits the ASB loading). APB is a much simpler bus and has a low power focus:
+data access is controlled by select and strobe only (i.e. no clock, and thereby reducing power)
+almost zero-power consumption when bus is not in use
+simple unpiplined interface, typical of that required by many simple peripheral macrocells.
+
+*** Privilege Levels
+
+PL0 - user mode
+PL1 - kernel mode
+PL2 - hypervisor mode
+
+EL (exception levels corresponds to privilege levels, so EL0-ELx exists)
+
+*** Interrupt controllers
+
+ARM made several interrupt controllers
+
+VIC/NVIC (PL190)
+AITC
+GIC (PL390) (V1/V2/V3)
+
+VIC used in:
+BCM (Raspberry PI 2 era)
+
+NVIC used in:
+Cortex-M0
+Cortex-M3
+
+GIC used in:
+Cortex-R5 (PL-390)
+Cortex-A15
+Cortex-A53
+
+*** CP15
+
+CP15, the System Control coprocessor, provides control of many features of the core.
+It can contain up to sixteen 32-bit primary registers.
+Access to CP15 is privilege controlled and not all registers are available in User mode.
+
+All system architecture functions are controlled by reading or writing a general purpose processor register (Rt) from or to a set of registers (CRn) located within Coprocessor 15.
+The Op1, Op2, and CRm fields of the instruction can also be used to select registers or operations. 
+
+Note: This is the ASM used for 32 bits, for 64 bit ARM, they use different instructions
+
+MRC p15, Op1, Rt, CRn, CRm, Op2 ; read a CP15 register into an ARM register
+MCR p15, Op1, Rt, CRn, CRm, Op2 ; write a CP15 register from an ARM register
+
+*** VBAR (Part of CP15)
+
+When the Security Extensions are implemented and high exception vectors are not selected, the Vector Base Address Register, VBAR,
+provides the exception base address for exceptions that are not handled in Monitor mode, see Exception vectors and the exception base address.
+The high exception vectors always have the base address 0xFFFF 0000 and are not affected by the value of VBAR.
+
+The Secure copy of the VBAR holds the vector base address for the Secure state, described as the Secure exception base address
+The Non-secure copy of the VBAR holds the vector base address for the Non-secure state, described as the Non-secure exception base address.
+
+Vector_Base_Address, bits [31:5]
+Bits [31:5] of the base address of the normal exception vectors. Bits [4:0] of an exception vector is the exception offset, see Table 10.3.
+
+Bits [4:0]
+Reserved, UNK/SBZP.
+
+MRC p15,0,<Rt>,c12,c0,0    ; Read  CP15 Vector Base Address Register
+MCR p15,0,<Rt>,c12,c0,0    ; Write CP15 Vector Base Address Register

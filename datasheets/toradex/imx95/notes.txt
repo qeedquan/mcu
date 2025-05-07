@@ -1,0 +1,12 @@
+*** Serial Port
+The serial port is exposed via USB-C cable.
+Hook up a USB-C cable to USB-C debug port on the board and connect the cable to the host computer.
+
+/dev/ttyUSB* should show up in Linux.
+/dev/ttyUSB2 is the Linux debug port
+
+Default credentials
+User: root
+Pass: (empty)
+
+

@@ -1,0 +1,33 @@
+*** Default Ethernet
+
+eth0: flags=-28669<UP,BROADCAST,MULTICAST,DYNAMIC>  mtu 1500
+        ether 66:38:51:66:a1:56  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+eth1: flags=-28669<UP,BROADCAST,MULTICAST,DYNAMIC>  mtu 1500
+        ether 00:00:00:00:00:03  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+eth2: flags=-28605<UP,BROADCAST,RUNNING,MULTICAST,DYNAMIC>  mtu 1500
+        inet6 fe80::200:ff:fe00:6  prefixlen 64  scopeid 0x20<link>
+        ether 00:00:00:00:00:06  txqueuelen 1000  (Ethernet)
+        RX packets 1  bytes 342 (342.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 6  bytes 1290 (1.2 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 90  bytes 7662 (7.4 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 90  bytes 7662 (7.4 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+

@@ -1,0 +1,26 @@
+*** Architecture
+QEMU starts executing at the address specified by the ELF entry point.
+
+On Virt ARM, the RAM starts at 0x40000000.
+If the entry point isn't specified to be the start of the RAM, the device tree (DTB) blob is placed there.
+This is why we should place the ELF after the start of the RAM.
+
+On a normal ARM architecture, execution starts at exception vector address of RESET, rather than the entry point of the ELF image.
+Since QEMU bypasses normal initialization, redirect the VBAR address to remap the exception vector handlers in main() rather than earlier.
+
+The processor used here is Cortex-A15, which is ARMV7-A.
+Specifying the CPU architecture to the compiler/assembler is important.
+The assembly code such as the exception vector table needs the branch instruction to be 4 bytes long for example.
+
+*** C library
+
+Newlib is the standard C library that is the default on arm-none-eabi-* toolchain.
+It is what is linked by default when using the compilers.
+
+To get newlib working, the following needs to be done:
+1. Implement syscalls (_read/_write/_sbrk/etc)
+2. Specify __bss_start__/__bs_end__/__stack sections in the ELF (the CRT init uses this)
+3. Provide a heap for _sbrk (used for malloc). An easy way to do this is to have a section in the ELF used for the heap.
+
+By default, _start is provided by the CRT so we don't need to implement an entry point ourselves and just provide main().
+

@@ -1,0 +1,17 @@
+*** Sypnosis
+The PPCE500 is a emulation of the PPC e500 series (e500v2/e500mc/e5500/e6500).
+The platform is based on the SOC MPC85xx series, but since MPC85xx share alot of the same registers as the (P4080, P5020, T2080),
+we can use some kernel builts for those and boot it.
+
+*** Boot
+If -bios is passed, then QEMU will use pc-bios/u-boot.e500 as u-boot firmware to load
+If -kernel is passed, then QEMU will just load the image directly as a kernel with all the setup done for us behind the scenes.
+
+Upon initial loading of the kernel image, QEMU will follow the standard PowerPC boot specified by the Power_ePAPR document.
+The ePAPR document specifies what the device tree format will look like and what initial CPU state the system will have.
+
+*** Interrupts
+
+The Open PIC controller is used as an interrupt controller.
+PowerPC by default has a fixed exception vector table (usually at 0 or 0xffff0000) that contains an external interrupt exception.
+What external interrupts get triggered is configured by the Open PIC interrupt controller.

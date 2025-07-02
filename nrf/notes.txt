@@ -1,0 +1,23 @@
+*** Setting up SDK
+
+Download ARM Toolchain
+https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads
+
+Download NRF SDK
+https://www.nordicsemi.com/Products/Development-software/nRF5-SDK/Download
+
+After extracting the SDK, modify
+components/toolchain/gcc/Makefile.* to point to the ARM toolchain
+
+*** Add custom board support
+https://learn.sparkfun.com/tutorials/nrf52840-advanced-development-with-the-nrf5-sdk
+
+For custom boards add the definition files to
+
+components/boards/
+
+and then modify boards.h to add in the includes
+
+The NRF SDK has example codes and for each boards, for custom boards, pick a one closest to that one and copy the example folder.
+Modify it to replace definitions to point to the custom board and memory map.
+

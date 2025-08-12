@@ -1,0 +1,10 @@
+***Button Reset
+The Arduino does a reset when the reset pin is pulled low, so we can
+wire it to a push button to control it externally.
+
+Use 10k resistance, the higher the value less power is wasted.
+Rule of thumb is 10k is adequate to protect against noise on board.
+
+For long term durability of switches, a resistor helps prevention of
+corrosion build-up.
+

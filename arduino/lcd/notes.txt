@@ -1,0 +1,9 @@
+***LCD Crystal Ball
+A tilt sensor is hooked up to a digital read, it will change state
+when it is shaken, emulating an eight-ball. Then using an LCD, we generate
+a random reply and display that.
+
+***Pitfalls
+The LCD has alot of input pins, make sure they are all wired right.
+If the potentiometer/resistor is not wired to 3 correctly, or if there
+is no resistor at all, the text will not display.

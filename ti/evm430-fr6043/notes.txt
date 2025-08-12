@@ -1,0 +1,105 @@
+*** Resources
+
+https://software-dl.ti.com/msp430/msp430_public_sw/mcu/msp430/MSP430BaudRateConverter/index.html
+https://www.argenox.com/library/msp430/
+
+*** MSPWARE
+TI provides a general library for all MSP430 boards called MSPWARE
+
+https://www.ti.com/tool/MSPWARE
+
+The package contains a bunch of libraries importable to the projects and examples to run
+
+*** CCS Studio
+Integrated IDE provided by TI, a frontend to eclipse to make and build projects
+
+https://www.ti.com/tool/CCSTUDIO
+
+*** Energia
+
+An Arduino like IDE but for MSP
+
+https://energia.nu/
+
+*** MSP Flasher
+Command line tool to flash .hex/.txt files, it can also read the firmware out
+
+https://www.ti.com/tool/MSP430-FLASHER
+
+Read back MAIN code into output.hex
+
+./MSP430Flasher -n MSP430FR6043 -r [output.hex,MAIN]
+
+CCS Studio by default generates a .out file (which is an ELF file), need to toggle the option to generate .hex file also to use this tool
+The tool used to generate hex file is hex430, needs the output format to be intel hex format for the flasher to recognize it
+
+./MSP430Flasher -n MSP430FR6043 -w file.txt -v -z [VCC] (-i USB) (-e ERASE_ALL)
+
+*** Uniflash
+
+A GUI counterpart to the MSP Flasher
+
+https://www.ti.com/tool/UNIFLASH
+
+*** Clocks
+
+ACLK: Auxiliary clock. ACLK is software selectable as LFXT1CLK or VLOCLK. ACLK is divided by 1, 2, 4, or 8. ACLK is software selectable for individual peripheral modules.
+MCLK: Master clock. MCLK is software selectable as LFXT1CLK, VLOCLK, XT2CLK (if available on-chip), or DCOCLK. MCLK is divided by 1, 2, 4, or 8. MCLK is used by the CPU and system.
+SMCLK: Sub-main clock. SMCLK is software selectable as LFXT1CLK, VLOCLK, XT2CLK (if available on-chip), or DCOCLK. SMCLK is divided by 1, 2, 4, or 8. SMCLK is software selectable for individual peripheral modules.
+
+DCOCLK is reset to 8 mhz on startup.
+MCLK/SMCLK uses the DCOCLK with a /8 divider on startup so it runs at 1 mhz.
+
+*** Dynamic power consumption estimation
+
+Dynamic power is calculated using the formula:
+
+0.5 * C * V^2 * f
+C - load capacitance
+V - voltage
+f - frequency
+
+*** Terms
+POR - Power on Reset
+This is powering up the system normally or RST pin triggered
+
+PUC - Power-up Clear
+Watchdog timeout or security key violation
+
+DCO - Digital Controlled Oscillator
+This oscillator feeds into the SMCLK/MCLK
+
+USCI - Universal Serial Communication Interface
+Module that implements various communication modes such as serial/i2c/spi/etc
+Exposed as a set of registers to use
+
+*** Probing the board
+
+There is a test point connection TP2 that is connected to GND. Use that as GND and then use the probe to connect to the PINs to measure it in an oscilloscope/logic analyzer
+
+*** UART
+
+By default the only cable that comes with the board is the USB connection and UART is shared on that connection.
+But it is disabled by default, need to set the jumpers on TX/RX at connector J3 for it to work.
+When programming the jumper RST/TEST on connector J3 for it to work.
+
+Without the jumpers on the TX/RX pin and we write to UART, we can still attach a probe to it and see the output via oscilloscope.
+
+The UART_RXD/UART_TXD output is also routed to the COMM_RXD/COMM_TXD signal that is on the connector J1 (this is a passthrough, so any signal that goes through UART_RXD/UART_TXD will show up as is on COMM_RXD/COMM_TXD).
+This allows debugging since if we put the jumper on UART_TXD/UART_TXD we still have another location to attach the probe to see the output.
+
+Can also use a logic analyzer like salae on the those pins to decode the serial port output to ascii/bytes
+
+The UART through the EZ-FET has a limitation of 115.2 kbps, higher rates will have glitches and output wrong characters
+
+*** I2C
+COMM_IRQ/COMM_SCL/COMM_SDA signals has jumpers on them on connector J1 to allow communication using I2C with the controller.
+We can remove the jumpers and use it as a regular PIN however.
+
+*** 5V output for VCC-Tx
+Set the jumper JP1 and JP2 to switch to 5V.
+Then enable these pins in code (TxPwrand Tx5vEn).
+This is disabled by default and VCC-Tx outputs 3.3v
+
+VCC-Rx does not have a 5v output, it will always use 3.3v
+

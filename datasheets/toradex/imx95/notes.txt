@@ -1,0 +1,125 @@
+*** Quirks
+
+If you turn off by yanking the power chord sometimes the board will get stuck in RST on startup (RST LED will be red)
+turn it off by yanking the chord and plug it back in for it to work.
+
+*** Serial Port
+The serial port is exposed via USB-C cable.
+Hook up a USB-C cable to USB-C debug port on the board and connect the cable to the host computer.
+
+/dev/ttyUSB* should show up in Linux.
+/dev/ttyUSB2 is the Linux debug port
+
+Default credentials
+User: root
+Pass: (empty)
+
+*** Software
+
+# Main repo
+https://github.com/nxp-imx
+
+# Linux kernel tree
+https://github.com/nxp-imx/linux-imx
+
+*** Flashing
+
+# uuu tool is used for flashing
+https://github.com/nxp-imx/mfgtools/releases
+
+# pre-built images (rootfs/kernel/dtbs)
+https://www.nxp.com/pages/alpha-beta-bsps-for-microprocessors:IMXPRERELEASES
+i.MX 95 19x19 EVK and Verdin – demo images with EVS in Arm Cortex-A core
+
+https://www.nxp.com/design/design-center/software/development-software/real-time-edge-software:REALTIME-EDGE-SOFTWARE
+https://www.nxp.com/webapp/sps/download/license.jsp?colCode=REAL-TIME_EDGE_V3.1_IMX95-19X19-LPDDR5-EVK&appType=file1&DOWNLOAD_ID=null
+Real Time Edge v3.1 for IMX95-19X19-LPDDR5-EVK
+
+# This is the one that Toradex preflashed
+https://www.nxp.com/design/design-center/software/embedded-software/i-mx-software/embedded-linux-for-i-mx-applications-processors:IMXLINUX
+L6.6.23_2.0.0_MX95
+
+
+*** Variations
+i.MX 95 19X19 EVK board
+
+*** Kernel (NXP reference image)
+Linux imx95evk 6.6.23-lts-next-06236-gb586a521770e #1 SMP PREEMPT
+
+*** TFTP booting
+U-boot by default uses enetc-0 which is the ethernet port near the power port 
+
+# This will boot kernel but if the rootfs is not found, it will panic
+dhcp
+setenv serverip 192.168.1.4
+tftp ${loadaddr} Image-6.6.23-lts-next-06236-gb586a521770e
+tftp ${fdt_addr_r} imx95-19x19-verdin.dtb
+booti ${loadaddr} - ${fdt_addr_r};
+
+*** MMC booting
+
+# Scripted command to boot from MMC
+run loadimage; run mmcboot
+run loadimage; run boot_os
+run loadimage; booti ${loadaddr} - ${fdt_addr_r};
+
+*** Flashing and booting from SD card
+The SD card slot is a MicroSD card on the bottom side of the board (J8)
+
+# Flash NXP Yocto .wic images
+sudo dd if=nxp-imx9.rootfs.wic of=/dev/sdc bs=64M oflag=sync status=progress
+
+# Set bootargs
+setenv bootargs 'cpuidle.off=1 console=ttyLP0,115200 earlycon root=/dev/mmcblk1p2 rootwait rw'
+setenv bootargs 'cpuidle.off=1 console=ttyLP0,115200 earlycon root=/dev/mmcblk0p2 rootwait rw'
+
+# By default, MMC is defaulted to device 0 (the eMMC), switch to the SD card
+mmc dev 1
+
+# Load the Kernel/DTB from MMC
+fatload mmc 0:1 $loadaddr /Image
+fatload mmc 0:1 $fdt_addr /imx95-19x19-verdin.dtb
+
+# Load the Kernel/DTB from SD card
+fatload mmc 1:1 $loadaddr /Image
+fatload mmc 1:1 $fdt_addr /imx95-19x19-verdin.dtb
+
+# Boot the kernel image
+booti $loadaddr - $fdt_addr_r
+
+*** Flashing EMMC with rootfs
+
+1. Plug in the USB-C into J5 (This port is next to the DBG port for serial)
+
+2. Run command: 
+# This waits for the USB /dev/ttyUSB* to come up
+sudo ./uuu -v -b emmc_all ./imx-boot-imx95-19x19-verdin-sd.bin-flash_all ./imx-image-full-imx95evk.wic
+
+3. Hold R8 recovery button, then turn on the board, this makes the programmable USB port show up in linux for the command above to go through.
+
+4. Wait for the programming to be finished, turn off the board and turn it back on and see if it works.
+
+*** Running Zephyr on a M-7 core
+https://www.toradex.com/blog/imx95-zephyr-asymmetric-multiprocessing
+
+# Setup venv for Zephyr
+sudo apt install python3-venv
+python3 -m venv ~/zephyrproject/.venv
+source ~/zephyrproject/.venv/bin/activate
+pip install west
+west init ~/zephyrproject
+cd ~/zephyrproject
+west update
+west zephyr-export
+west packages pip --install
+west sdk install
+
+# Zephyr command to build sample application
+west init -m https://github.com/mabembedded/zephyr.git
+west update
+west build -p -b imx95_evk/mimx9596/m7 samples/hello_world
+
+# Load the firmware to run (run on the board)
+cd /sys/devices/platform/imx95-cm7/remoteproc/remoteproc1/
+echo ~/zephyr.elf > firmware
+root@imx95-19x19-verdin:~# echo start > state

@@ -1,0 +1,79 @@
+*** System
+https://genesi.company/products/pegasos
+
+Micro ATX form factor (236mm x 172mm)
+IEEE 1275 Firmware/boot interface
+Marvell Discovery II (MV64361) System Controller
+G3 or G4 Power Architecture CPU
+184-pin 266MHz DDR RAM sockets
+1x AGP slot
+3x PCI slots with riser connector
+2x ATA100 IDE Channels
+3x IEEE1394 ports (400Mbit)
+3x USB 1.1 ports (12Mbit)
+Gigabit and 10/100 Ethernet
+AC97 Audio Subsystem
+  
+Stereo audio
+Microphone
+S/PDIF optical output
+PC Gameport/MIDI
+  
+IrDA, Serial (RS232), Parallel (IEEE1284) and PS/2 (Keyboard & Mouse)
+Floppy drive connector
+
+This board is mostly compatible with the Common Hardware Reference Platform (CHRP) platforms.
+
+*** Firmware
+Use Open Firmware compliant ROM based on SmartFirmware
+http://web.archive.org/web/20071021223056/http://www.bplan-gmbh.de/up050404/up050404
+
+To get the ROM out of the image:
+tail -c +85581 up050404 | head -c 524288 > pegasos2.rom
+
+pegasos2.rom code layout (addresses are what the cpu sees):
+0xfff00000 - jump to main function (this is unused, since the execution starts at 0xfff00100)
+0xfff00100 - start of execution, clear caches and call main
+0xfff04000 - main function
+0xfff0410c - setup PCI/IO (need this for serial port to work)
+0xfff057b8 - print string to serial port
+
+*** Exception vectors
+Exception vectors are stored at [0x0, 0x3000]
+
+*** Booting
+QEMU uses vof.bin (Open Firmware Image) if the pegasos2.rom is not given via -bios.
+vof.bin is packaged as part of a QEMU install.
+
+0xfff00000 - ROM start loading location (Does not execute at this location on startup)
+0xfff00100 - ROM start execution location
+
+0xfe000000 - PCI IO Space (This is a vt8231 southbridge for serial, rtc, etc)
+0xf1000000 - Marvell SOC registers
+
+On bootup, vof.bin will setup PCI/SIO for us so we can use the PCI IO space and serial port immediately.
+If we use a custom ROM via -bios, the custom ROM will have to set up the PCI/SIO to be able to use serial port.
+
+The QEMU VOF firmware does not store the device tree in r3 after the kernel is loaded.
+Need to use VOF call interfaces to read the device tree, which is much more complicated.
+For operating systems that do not support calling VOF interfaces, it is easier to dump the DTB and embed it into the kernel on bootup.
+
+If -kernel is used to load the kernel without -bios, the firmware initialization code is skipped, this has implications with code that does software resets.
+Software resets usually jump back to the bootrom, but since this is done in QEMU before code loading in this case,
+we need to implement reset such to jump back to the start of the execution in the kernel image with all the initial arguments saved.
+
+*** Building
+binutils target is elf32-powerpc
+
+To build Linux Kernel
+make ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu- chrp32_defconfig
+make ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu- menuconfig
+make ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu- -j16
+make ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu- -j16 zImage.*
+
+The newer kernels have an issue with the default QEMU DTB, it uses the <reg> field in the CPU DTB as a count of the # of CPUs and assigns a wrong boot_cpuid
+Easiest fix is to use GDB and just set the boot_cpuid=0
+
+The newer kernels started removing drivers related to this board so this can't be used for real work.
+Debian 8.11.0 is the last major Linux distribution that supports booting this board.
+

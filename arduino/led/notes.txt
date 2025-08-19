@@ -1,0 +1,57 @@
+***Builtin
+A standard Arduino has a LED builtin at PIN 13, we can toggle the PIN
+to make it blink
+
+***Single LED
+Arduino has a 5V and GND pin for a closed circuit connection,
+we connect that to a resistor and LED in series to make the LED light up.
+A common resistor value used is 220 ohms.
+
+We don't need any custom code here, the Arduino is just acting like a
+constant voltage source here.
+
+Don't need to do PWM here because we want constant light intensity,
+if we want to change the brightness of the LED, use a different resistance
+value. With no resistor, the LED can burn up as the current is too much.
+
+***LED Button Series/Parallel
+
+Arduino has a 5V and GND pin for a closed circuit connection,
+we connect that to a resistor, LED, and a button  in series to make
+the LED light up if the button is pressed. Both of the button contacts
+must be connected to the path, otherwise it won't work (it treats one
+contact as another wire that still closes the circuit so the LED is still
+connected)
+
+If we have a 4 legged button instead of a 2 legged one, make sure it is
+rotated correctly because each of the 2 legs are connected to each other
+but not to the other 2 connected legs, so the unconnected legs
+are the one that form a switch, they become connected when
+the button is pushed
+
+If the buttons are connected in series, all of the button needs to
+be pressed to complete the circuit, this is LEDB2
+
+If the buttons are connected in parallel, then closing any one switch
+will complete the circuit, this is LEDB3
+
+Don't need to do PWM here because we want constant light intensity,
+differing resistor will change the brightness here.
+
+***LED RGB
+The RGB LED is a 4 pin LED that has R, G, B, and GND pin.
+The R, G, B pin connects to the PWM channels of the Arduino and the Arduino
+can set the colors based on pulsing those channel. GND pin connects to GND.
+
+The R, G, B pin needs to route through a resistor (usually standard 220 Ohm),
+same as a regular LED.
+
+We can add 3 photoresistor that changes it's resistance based on light, these resistor
+needs a 10 KOhm connected in series, and they connect to the analog ports of the Arduino.
+
+The Arduino can then use the analog ports to read the resistance value as we expose it
+to different conditions, we can use this to detect color and write the color values we read from the
+photoresistor out into the RGB LED so we can make a color detector.
+We can add a color gel filter (red, green, blue) on each of the 3 photoresistor to
+have each one filter out a color band.
+

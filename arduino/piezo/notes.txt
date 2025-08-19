@@ -1,0 +1,20 @@
+***Piezo Resistor Ladder
+To save on digital pins, one common trick is to use a resistor ladder, which
+is a cascade of different resistance ladder connected in parallel hooked
+to a set of buttons. When the buttons close the circuit, it will close
+a resistor and an analog read will return a range that we can use to
+distinguish states.
+
+We hook up 220 ohm, 10 kohm, 1 mohm in parallel with a 10 kohm in series
+The following shows the analog values read back
+
+Analog read states:
+Floating (No buttons closed) ~0
+First button closed ~1023 (10 kohm)
+Second button closed ~990:~1000 (220 ohm + 10 kohm)
+Third button closed: ~500:~600 (10 kohm + 10kohm)
+Fourth button closed ~10:~20 (1 mohm + 10 kohm)
+
+Use these analog values to feed into the piezo at different tones,
+while the button is closed, it will keep generating the tone at that
+frequency, when we release it, the duration will expire and silence occurs

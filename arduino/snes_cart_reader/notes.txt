@@ -1,0 +1,10 @@
+# PIN header that connects to the SNES cartridge
+# 1Pc Game Card Slot For SFC SNES SNES FC Console Connector 64Pin 60Pin 62Pin 50Pin Game Cartridge Slot 2.5mm Interval For N64
+https://www.aliexpress.us/item/3256807355537330.html
+https://www.aliexpress.us/item/3256806175765692.html
+https://www.aliexpress.us/item/3256807091590287.html
+
+# Contains PCB schematics and Arduino code
+# Send PCB to manufacturer, make some then hook it to Arduino
+https://github.com/sanni/cartreader
+

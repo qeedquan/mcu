@@ -1,0 +1,194 @@
+U-Boot SPL 2024.04+g674440bc73e+p0 (Jun 06 2024 - 10:05:34 +0000)
+SOC: 0xa1009500
+LC: 0x40010
+SYS Boot reason: por, origin: -1, errid: -1
+SYS shutdown reason: por, origin: -1, errid: -1
+DDRMIX is powered UP
+Normal Boot
+Trying to boot from MMC1
+Primary set selected
+Load image from MMC/SD 0xddc00
+NOTICE:  BL31: v2.10.0  (release):android-14.0.0_2.0.0-rc1-1-g49143a170
+NOTICE:  BL31: Built : 10:04:22, May 29 2024
+
+
+U-Boot 2024.04+g674440bc73e+p0 (Jun 06 2024 - 10:05:34 +0000)
+
+CPU:   i.MX95 rev1.1 at 1800MHz
+CPU:   Automotive temperature grade (-40C to 125C) at 38C
+LM Boot reason: sw, origin: 2, errid: 1
+LM shutdown reason: sw, origin: 2, errid: 1
+Model: Toradex i.MX95 19X19 Verdin EVK
+DRAM:  15.8 GiB
+TCPC:  Vendor ID [0x1fc9], Product ID [0x5110], Addr [I2C6 0x52]
+cfg name not match mx95alt:mx95evk, ignore
+Core:  271 devices, 31 uclasses, devicetree: separate
+MMC:   FSL_SDHC: 0, FSL_SDHC: 1
+Loading Environment from MMC... *** Warning - bad CRC, using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+
+BuildInfo:
+  - ELE firmware version 0.0.3-25f6a933
+
+switch to partitions #0, OK
+mmc0(part 0) is current device
+UID: 0x908c95e3 0xd94ff9f0 0xfcda718a 0xd92013d6
+flash target is MMC:0
+Net:   WARNING: no MAC address assigned for MAC0
+imx_get_mac_from_fuse: fuse read err: 0
+
+Warning: enetc-0 (eth0) using random MAC address - e2:a4:58:39:23:64
+eth0: enetc-0 [PRIME]Could not get PHY for emdio-0: addr 2
+
+Fastboot: Normal
+Normal Boot
+Hit any key to stop autoboot:  0
+u-boot=>
+
+u-boot=> bdinfo
+boot_params = 0x0000000000000000
+DRAM bank   = 0x0000000000000000
+-> start    = 0x0000000090000000
+-> size     = 0x0000000070000000
+DRAM bank   = 0x0000000000000001
+-> start    = 0x0000000100000000
+-> size     = 0x0000000380000000
+flashstart  = 0x0000000000000000
+flashsize   = 0x0000000000000000
+flashoffset = 0x0000000000000000
+baudrate    = 115200 bps
+relocaddr   = 0x00000000ffef0000
+reloc off   = 0x000000006fcf0000
+Build       = 64-bit
+current eth = enetc-0
+ethaddr     = 56:f0:a9:60:d6:5f
+IP addr     = <NULL>
+fdt_blob    = 0x00000000fdee3d60
+new_fdt     = 0x00000000fdee3d60
+fdt_size    = 0x000000000000c000
+lmb_dump_all:
+ memory.cnt = 0x1 / max = 0x10
+ memory[0]      [0x90000000-0x47fffffff], 0x3f0000000 bytes flags: 0
+ reserved.cnt = 0x2 / max = 0x10
+ reserved[0]    [0xfced9000-0x47fffffff], 0x383127000 bytes flags: 0
+ reserved[1]    [0xfdedf6f0-0xffffffff], 0x02120910 bytes flags: 0
+devicetree  = separate
+arch_number = 0x0000000000000000
+TLB addr    = 0x00000000fffe0000
+irq_sp      = 0x00000000fdee3d50
+sp start    = 0x00000000fdee3d50
+Early malloc usage: c1c0 / 10000
+u-boot=>
+
+u-boot=> v2x_status
+V2X state: 0x15
+V2X power state: 0x1
+V2X err code: 0xd6
+u-boot=> 
+
+u-boot=> printenv ethact
+ethact=enetc-0
+u-boot=> 
+
+***
+
+u-boot=> printenv
+arch=arm
+auth_os=auth_cntr ${cntr_addr}
+baudrate=115200
+board=verdin-imx95
+board_name=verdin-imx95
+boot_a_script=load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${prefix}${script}; source ${scriptaddr}
+boot_efi_binary=load ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_r} efi/boot/bootaa64.efi; if fdt addr -q ${fdt_addr_r}; then bootefi ${kernel_addr_r} ${fdt_addr_r};else bootefi ${kernel_addr_r} ${fdtcontroladdr};fi
+boot_efi_bootmgr=if fdt addr -q ${fdt_addr_r}; then bootefi bootmgr ${fdt_addr_r};else bootefi bootmgr;fi
+boot_extlinux=sysboot ${devtype} ${devnum}:${distro_bootpart} any ${scriptaddr} ${prefix}${boot_syslinux_conf}
+boot_fit=no
+boot_net_usb_start=usb start
+boot_os=booti ${loadaddr} - ${fdt_addr_r};
+boot_pci_enum=pci enum
+boot_prefixes=/ /boot/
+boot_script_dhcp=boot.scr.uimg
+boot_scripts=boot.scr.uimg boot.scr
+boot_syslinux_conf=extlinux/extlinux.conf
+boot_targets=mmc0 mmc1 usb0
+bootcmd=run distro_bootcmd;run bsp_bootcmd
+bootcmd_mfg=run mfgtool_args;if iminfo ${initrd_addr}; then if test ${tee} = yes; then bootm ${tee_addr} ${initrd_addr} ${fdt_addr}; else booti ${loadaddr} ${initrd_addr} ${fdt_addr}; fi; else echo "Run fastboot ..."; fastboot 0; fi;
+bootcmd_mmc0=devnum=0; run mmc_boot
+bootcmd_mmc1=devnum=1; run mmc_boot
+bootcmd_usb0=devnum=0; run usb_boot
+bootdelay=2
+bootm_size=0x10000000
+bootscript=echo Running bootscript from mmc ...; source
+bsp_bootcmd=echo Running BSP bootcmd ...; mmc dev ${mmcdev}; if mmc rescan; then if run loadbootscript; then run bootscript; else if test ${sec_boot} = yes; then if run loadcntr; then run mmcboot; else run netboot; fi; else if run loadimage; then run mmcboot; else run netboot; fi; fi; fi; fi;
+cntr_addr=0xA8000000
+cntr_file=os_cntr_signed.bin
+console=ttyLP0,115200 earlycon
+cpu=armv8
+cpuidle=cpuidle.off=1
+distro_bootcmd=for target in ${boot_targets}; do run bootcmd_${target}; done
+dom0fdt_file=imx95-19x19-verdin.dtb
+domu-android-auto=no
+efi_dtb_prefixes=/ /dtb/ /dtb/current/
+emmc_dev=0
+ethact=enetc-0
+ethaddr=00:01:02:03:04:05
+ethprime=eth0
+fastboot_dev=mmc0
+fdt_addr=0x93000000
+fdt_addr_r=0x93000000
+fdt_high=0xffffffffffffffff
+fdtcontroladdr=fdee3d60
+fdtfile=imx95-19x19-verdin.dtb
+image=Image
+initrd_addr=0x93800000
+initrd_high=0xffffffffffffffff
+jh_mmcboot=setenv fdtfile ${jh_root_dtb}; setenv jh_clk cpuidle.off=1 clk_ignore_unused mem=1408MB kvm-arm.mode=nvhe; if run loadimage; then run mmcboot;else run jh_netboot; fi;
+jh_netboot=setenv fdtfile ${jh_root_dtb}; setenv jh_clk cpuidle.off=1 clk_ignore_unused mem=1408MB kvm-arm.mode=nvhe; run netboot;
+jh_root_dtb=imx95-19x19-verdin-root.dtb
+kboot=booti
+kernel_addr_r=0x90400000
+load_efi_dtb=load ${devtype} ${devnum}:${distro_bootpart} ${fdt_addr_r} ${prefix}${efi_fdtfile}
+loadaddr=0x90400000
+loadbootscript=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${script};
+loadcntr=fatload mmc ${mmcdev}:${mmcpart} ${cntr_addr} ${cntr_file}
+loadfdt=fatload mmc ${mmcdev}:${mmcpart} ${fdt_addr_r} ${fdtfile}
+loadimage=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${image}
+mfgtool_args=setenv bootargs console=${console},${baudrate} rdinit=/linuxrc clk_ignore_unused
+mmc_boot=if mmc dev ${devnum}; then devtype=mmc; run scan_dev_for_boot_part; fi
+mmcargs=setenv bootargs ${cpuidle} ${jh_clk} ${mcore_args} console=${console} root=${mmcroot}
+mmcautodetect=yes
+mmcboot=echo Booting from mmc ...; run mmcargs; if test ${sec_boot} = yes; then if run auth_os; then run boot_os; else echo ERR: failed to authenticate; fi; else if test ${boot_fit} = yes || test ${boot_fit} = try; then bootm ${loadaddr}; else if run loadfdt; then run boot_os; else echo WARN: Cannot load the DT; fi; fi;fi;
+mmcdev=0
+mmcpart=1
+mmcroot=/dev/mmcblk0p2 rootwait rw
+netargs=setenv bootargs ${cpuidle} ${jh_clk} ${mcore_args} console=${console} root=/dev/nfs ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp
+netboot=echo Booting from net ...; run netargs;  if test ${ip_dyn} = yes; then setenv get_cmd dhcp; else setenv get_cmd tftp; fi; if test ${sec_boot} = yes; then ${get_cmd} ${cntr_addr} ${cntr_file}; if run auth_os; then run boot_os; else echo ERR: failed to authenticate; fi; else ${get_cmd} ${loadaddr} ${image}; if test ${boot_fit} = yes || test ${boot_fit} = try; then bootm ${loadaddr}; else if ${get_cmd} ${fdt_addr_r} ${fdtfile}; then run boot_os; else echo WARN: Cannot load the DT; fi; fi;fi;
+prepare_mcore=setenv mcore_args pd_ignore_unused;
+scan_dev_for_boot=echo Scanning ${devtype} ${devnum}:${distro_bootpart}...; for prefix in ${boot_prefixes}; do run scan_dev_for_extlinux; run scan_dev_for_scripts; done;run scan_dev_for_efi;
+scan_dev_for_boot_part=part list ${devtype} ${devnum} -bootable devplist; env exists devplist || setenv devplist 1; for distro_bootpart in ${devplist}; do if fstype ${devtype} ${devnum}:${distro_bootpart} bootfstype; then part uuid ${devtype} ${devnum}:${distro_bootpart} distro_bootpart_uuid ; run scan_dev_for_boot; fi; done; setenv devplist
+scan_dev_for_efi=setenv efi_fdtfile ${fdtfile}; for prefix in ${efi_dtb_prefixes}; do if test -e ${devtype} ${devnum}:${distro_bootpart} ${prefix}${efi_fdtfile}; then run load_efi_dtb; fi;done;run boot_efi_bootmgr;if test -e ${devtype} ${devnum}:${distro_bootpart} efi/boot/bootaa64.efi; then echo Found EFI removable media binary efi/boot/bootaa64.efi; run boot_efi_binary; echo EFI LOAD FAILED: continuing...; fi; setenv efi_fdtfile
+scan_dev_for_extlinux=if test -e ${devtype} ${devnum}:${distro_bootpart} ${prefix}${boot_syslinux_conf}; then echo Found ${prefix}${boot_syslinux_conf}; run boot_extlinux; echo EXTLINUX FAILED: continuing...; fi
+scan_dev_for_scripts=for script in ${boot_scripts}; do if test -e ${devtype} ${devnum}:${distro_bootpart} ${prefix}${script}; then echo Found U-Boot script ${prefix}${script}; run boot_a_script; echo SCRIPT FAILED: continuing...; fi; done
+scriptaddr=0x93500000
+sd_dev=1
+sec_boot=no
+serial#=e3958c90f0f94fd9
+soc=imx9
+soc_type=imx95
+splashimage=0xA0000000
+usb_boot=usb start; if usb dev ${devnum}; then devtype=usb; run scan_dev_for_boot_part; fi
+vendor=toradex
+xenboot_common=${get_cmd} ${loadaddr} xen;${get_cmd} ${fdt_addr} ${dom0fdt_file};${get_cmd} ${xenlinux_addr} ${image};fdt addr ${fdt_addr};fdt resize 256;fdt set /chosen/module@0 reg <0x00000000 ${xenlinux_addr} 0x00000000 0x${filesize}>;fdt set /chosen/module@0 bootargs "${bootargs} ${xenlinux_bootargs}"; setenv bootargs ${xenhyper_bootargs};booti ${loadaddr} - ${fdt_addr};
+xenhyper_bootargs=console=dtuart dom0_mem=2048M dom0_max_vcpus=2
+xenlinux_addr=0x9e000000
+xenlinux_bootargs=
+xenlinux_console=hvc0 earlycon=xen
+xenmmcboot=setenv get_cmd "fatload mmc ${mmcdev}:${mmcpart}";setenv console ${xenlinux_console};run mmcargs;run xenboot_common;
+xennetboot=setenv get_cmd dhcp;setenv console ${xenlinux_console};run netargs;run xenboot_common;
+
+Environment size: 6777/16380 bytes
+u-boot=>
+

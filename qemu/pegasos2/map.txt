@@ -1,0 +1,171 @@
+(qemu) info mtree
+address-space: VGA
+  0000000000000000-ffffffffffffffff (prio 0, i/o): bus master container
+
+address-space: mv64361-pcibridge
+  0000000000000000-ffffffffffffffff (prio 0, i/o): bus master container
+    0000000000000000-ffffffffffffffff (prio 0, i/o): alias bus master @system 0000000000000000-ffffffffffffffff
+
+address-space: I/O
+  0000000000000000-000000000000ffff (prio 0, i/o): io
+
+address-space: vt82c686b-usb-uhci
+  0000000000000000-ffffffffffffffff (prio 0, i/o): bus master container
+    0000000000000000-ffffffffffffffff (prio 0, i/o): alias bus master @system 0000000000000000-ffffffffffffffff
+
+address-space: vt8231-isa
+  0000000000000000-ffffffffffffffff (prio 0, i/o): bus master container
+
+address-space: via-ac97
+  0000000000000000-ffffffffffffffff (prio 0, i/o): bus master container
+
+address-space: vt82c686b-usb-uhci
+  0000000000000000-ffffffffffffffff (prio 0, i/o): bus master container
+    0000000000000000-ffffffffffffffff (prio 0, i/o): alias bus master @system 0000000000000000-ffffffffffffffff
+
+address-space: mv64361-pcibridge
+  0000000000000000-ffffffffffffffff (prio 0, i/o): bus master container
+    0000000000000000-ffffffffffffffff (prio 0, i/o): alias bus master @system 0000000000000000-ffffffffffffffff
+
+address-space: vt8231-pm
+  0000000000000000-ffffffffffffffff (prio 0, i/o): bus master container
+
+address-space: via-ide
+  0000000000000000-ffffffffffffffff (prio 0, i/o): bus master container
+    0000000000000000-ffffffffffffffff (prio 0, i/o): alias bus master @system 0000000000000000-ffffffffffffffff
+
+address-space: cpu-memory-0
+address-space: memory
+  0000000000000000-ffffffffffffffff (prio 0, i/o): system
+    0000000000000000-000000001fffffff (prio 0, ram): pegasos2.ram
+    0000000080000000-00000000bfffffff (prio 0, i/o): alias pci1-mem0-win @pci1-mem 0000000080000000-00000000bfffffff
+    00000000c0000000-00000000dfffffff (prio 0, i/o): alias pci0-mem0-win @pci0-mem 00000000c0000000-00000000dfffffff
+    00000000f1000000-00000000f100ffff (prio 0, i/o): mv64361
+    00000000f8000000-00000000f8ffffff (prio 0, i/o): alias pci0-io-win @pci0-io 0000000000000000-0000000000ffffff
+    00000000f9000000-00000000f9ffffff (prio 0, i/o): alias pci0-mem1-win @pci0-mem 0000000000000000-0000000000ffffff
+    00000000fd000000-00000000fdffffff (prio 0, i/o): alias pci1-mem1-win @pci1-mem 0000000000000000-0000000000ffffff
+    00000000fe000000-00000000feffffff (prio 0, i/o): alias pci1-io-win @pci1-io 0000000000000000-0000000000ffffff
+    00000000ff800000-00000000ffffffff (prio 0, i/o): alias pci1-mem3-win @pci1-mem 00000000ff800000-00000000ffffffff
+    00000000fff00000-00000000fff7ffff (prio 0, rom): pegasos2.rom
+
+address-space: via-mc97
+  0000000000000000-ffffffffffffffff (prio 0, i/o): bus master container
+
+memory-region: system
+  0000000000000000-ffffffffffffffff (prio 0, i/o): system
+    0000000000000000-000000001fffffff (prio 0, ram): pegasos2.ram
+    0000000080000000-00000000bfffffff (prio 0, i/o): alias pci1-mem0-win @pci1-mem 0000000080000000-00000000bfffffff
+    00000000c0000000-00000000dfffffff (prio 0, i/o): alias pci0-mem0-win @pci0-mem 00000000c0000000-00000000dfffffff
+    00000000f1000000-00000000f100ffff (prio 0, i/o): mv64361
+    00000000f8000000-00000000f8ffffff (prio 0, i/o): alias pci0-io-win @pci0-io 0000000000000000-0000000000ffffff
+    00000000f9000000-00000000f9ffffff (prio 0, i/o): alias pci0-mem1-win @pci0-mem 0000000000000000-0000000000ffffff
+    00000000fd000000-00000000fdffffff (prio 0, i/o): alias pci1-mem1-win @pci1-mem 0000000000000000-0000000000ffffff
+    00000000fe000000-00000000feffffff (prio 0, i/o): alias pci1-io-win @pci1-io 0000000000000000-0000000000ffffff
+    00000000ff800000-00000000ffffffff (prio 0, i/o): alias pci1-mem3-win @pci1-mem 00000000ff800000-00000000ffffffff
+    00000000fff00000-00000000fff7ffff (prio 0, rom): pegasos2.rom
+
+memory-region: pci1-mem
+  0000000000000000-00000000ffffffff (prio 0, i/o): pci1-mem
+    00000000000a0000-00000000000bffff (prio 1, i/o): vga-lowmem
+
+memory-region: pci0-mem
+  0000000000000000-00000000ffffffff (prio 0, i/o): pci0-mem
+
+memory-region: pci0-io
+  0000000000000000-000000000000ffff (prio 0, i/o): pci0-io
+
+memory-region: pci1-io
+  0000000000000000-000000000000ffff (prio 0, i/o): pci1-io
+    0000000000000000-0000000000000007 (prio 0, i/o): dma-chan
+    0000000000000008-000000000000000f (prio 0, i/o): dma-cont
+    0000000000000020-0000000000000021 (prio 0, i/o): pic
+    0000000000000040-0000000000000043 (prio 0, i/o): pit
+    0000000000000060-0000000000000060 (prio 0, i/o): i8042-data
+    0000000000000064-0000000000000064 (prio 0, i/o): i8042-cmd
+    0000000000000070-0000000000000071 (prio 0, i/o): rtc
+      0000000000000070-0000000000000070 (prio 0, i/o): rtc-index
+    0000000000000081-0000000000000083 (prio 0, i/o): dma-page
+    0000000000000087-0000000000000087 (prio 0, i/o): dma-page
+    0000000000000089-000000000000008b (prio 0, i/o): dma-page
+    000000000000008f-000000000000008f (prio 0, i/o): dma-page
+    00000000000000a0-00000000000000a1 (prio 0, i/o): pic
+    00000000000000b2-00000000000000b3 (prio 0, i/o): apm-io
+    00000000000000c0-00000000000000cf (prio 0, i/o): dma-chan
+    00000000000000d0-00000000000000df (prio 0, i/o): dma-cont
+    00000000000001ce-00000000000001d1 (prio 0, i/o): vbe
+    00000000000002f8-00000000000002ff (prio 0, i/o): serial
+    0000000000000378-000000000000037f (prio 0, i/o): parallel
+    00000000000003b4-00000000000003b5 (prio 0, i/o): vga
+    00000000000003ba-00000000000003ba (prio 0, i/o): vga
+    00000000000003c0-00000000000003cf (prio 0, i/o): vga
+    00000000000003d4-00000000000003d5 (prio 0, i/o): vga
+    00000000000003da-00000000000003da (prio 0, i/o): vga
+    00000000000003f1-00000000000003f5 (prio 0, i/o): fdc
+    00000000000003f7-00000000000003f7 (prio 0, i/o): fdc
+    00000000000004d0-00000000000004d0 (prio 0, i/o): elcr
+    00000000000004d1-00000000000004d1 (prio 0, i/o): elcr
+    0000000000000f00-0000000000000f7f (prio 0, i/o): via-pm
+      0000000000000f00-0000000000000f03 (prio 0, i/o): acpi-evt
+      0000000000000f04-0000000000000f05 (prio 0, i/o): acpi-cnt
+      0000000000000f08-0000000000000f0b (prio 0, i/o): acpi-tmr
+
+(qemu) info pci
+  Bus  0, device   0, function 0:
+    Host bridge: PCI device 11ab:6460
+      PCI subsystem 1af4:1100
+      id ""
+  Bus  0, device   1, function 0:
+    VGA controller: PCI device 1234:1111
+      PCI subsystem 1af4:1100
+      BAR0: 32 bit prefetchable memory at 0xffffffffffffffff [0x00fffffe].
+      BAR2: 32 bit memory at 0xffffffffffffffff [0x00000ffe].
+      BAR6: 32 bit memory at 0xffffffffffffffff [0x0000fffe].
+      id ""
+  Bus  0, device  12, function 0:
+    ISA bridge: PCI device 1106:8231
+      PCI subsystem 1af4:1100
+      id ""
+  Bus  0, device  12, function 1:
+    IDE controller: PCI device 1106:0571
+      PCI subsystem 1af4:1100
+      IRQ 14, pin A
+      BAR0: I/O at 0xffffffffffffffff [0x0006].
+      BAR1: I/O at 0xffffffffffffffff [0x0002].
+      BAR2: I/O at 0xffffffffffffffff [0x0006].
+      BAR3: I/O at 0xffffffffffffffff [0x0002].
+      BAR4: I/O at 0xffffffffffffffff [0x000e].
+      id ""
+  Bus  0, device  12, function 2:
+    USB controller: PCI device 1106:3038
+      PCI subsystem 1af4:1100
+      IRQ 9, pin D
+      BAR4: I/O at 0xffffffffffffffff [0x001e].
+      id ""
+  Bus  0, device  12, function 3:
+    USB controller: PCI device 1106:3038
+      PCI subsystem 1af4:1100
+      IRQ 9, pin D
+      BAR4: I/O at 0xffffffffffffffff [0x001e].
+      id ""
+  Bus  0, device  12, function 4:
+    Bridge: PCI device 1106:8235
+      PCI subsystem 1af4:1100
+      id ""
+  Bus  0, device  12, function 5:
+    Audio controller: PCI device 1106:3058
+      PCI subsystem 1af4:1100
+      IRQ 9, pin C
+      BAR0: I/O at 0xffffffffffffffff [0x00fe].
+      BAR1: I/O at 0xffffffffffffffff [0x0002].
+      BAR2: I/O at 0xffffffffffffffff [0x0002].
+      id ""
+  Bus  0, device  12, function 6:
+    Class 1920: PCI device 1106:3068
+      PCI subsystem 1af4:1100
+      IRQ 9, pin C
+      id ""
+  Bus  0, device   0, function 0:
+    Host bridge: PCI device 11ab:6460
+      PCI subsystem 1af4:1100
+      id ""
+

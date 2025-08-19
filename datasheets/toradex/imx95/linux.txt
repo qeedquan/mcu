@@ -1,0 +1,91 @@
+*** Default cmdline
+root@imx95evk:~# cat /proc/cmdline
+cpuidle.off=1 console=ttyLP0,115200 earlycon root=/dev/mmcblk0p2 rootwait rw
+root@imx95evk:~#
+
+*** Modules
+root@imx95evk:~# lsmod
+Module                  Size  Used by
+crct10dif_ce           12288  1
+polyval_ce             12288  0
+snd_soc_fsl_asoc_card    24576  0
+polyval_generic        12288  1 polyval_ce
+snd_soc_imx_audmux     12288  1 snd_soc_fsl_asoc_card
+mxc_jpeg_encdec        36864  0
+snd_soc_imx_card       16384  0
+v4l2_jpeg              12288  1 mxc_jpeg_encdec
+snd_soc_fsl_micfil     24576  2
+snd_soc_wm8904         61440  1
+snd_soc_fsl_sai        32768  4
+flexcan                28672  0
+rpmsg_ctrl             12288  0
+snd_soc_fsl_utils      12288  2 snd_soc_fsl_micfil,snd_soc_fsl_sai
+imx_pcm_dma            12288  1 snd_soc_fsl_sai
+can_dev                45056  1 flexcan
+rpmsg_char             20480  1 rpmsg_ctrl
+pwm_fan                12288  0
+fuse                  135168  1
+root@imx95evk:~#
+
+*** PCI
+root@imx95evk:~# lspci
+0000:00:00.0 PCI bridge: Philips Semiconductors Device 0000
+0001:00:00.0 PCI bridge: Philips Semiconductors Device 0000
+0002:00:00.0 Ethernet controller: Philips Semiconductors Device e101 (rev 04)
+0002:00:01.0 Generic system peripheral [0807]: Philips Semiconductors Device e001 (rev 03)
+0002:00:08.0 Ethernet controller: Philips Semiconductors Device e101 (rev 04)
+0002:00:10.0 Ethernet controller: Philips Semiconductors Device e101 (rev 04)
+0002:00:18.0 System peripheral: Philips Semiconductors Device ee02 (rev 04)
+0003:01:00.0 System peripheral: Philips Semiconductors Device ee00 (rev 04)
+0003:01:01.0 Generic system peripheral [0807]: Philips Semiconductors Device e001 (rev 03)
+root@imx95evk:~#
+
+*** Disk
+root@imx95evk:~# df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       9.8G  4.8G  4.6G  52% /
+devtmpfs        7.3G  4.0K  7.3G   1% /dev
+tmpfs           7.7G     0  7.7G   0% /dev/shm
+tmpfs           3.1G  9.1M  3.1G   1% /run
+tmpfs           7.7G   12K  7.7G   1% /tmp
+tmpfs           7.7G  220K  7.7G   1% /var/volatile
+/dev/mmcblk0p1   84M   41M   43M  49% /run/media/boot-mmcblk0p1
+/dev/mmcblk1p1   84M   34M   50M  41% /run/media/boot-mmcblk1p1
+/dev/mmcblk1p2  431M  221M  183M  55% /run/media/root-mmcblk1p2
+tmpfs           1.6G  8.0K  1.6G   1% /run/user/0
+root@imx95evk:~# 
+
+
+*** Default Ethernet
+
+eth0: flags=-28669<UP,BROADCAST,MULTICAST,DYNAMIC>  mtu 1500
+        ether 66:38:51:66:a1:56  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+eth1: flags=-28669<UP,BROADCAST,MULTICAST,DYNAMIC>  mtu 1500
+        ether 00:00:00:00:00:03  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+eth2: flags=-28605<UP,BROADCAST,RUNNING,MULTICAST,DYNAMIC>  mtu 1500
+        inet6 fe80::200:ff:fe00:6  prefixlen 64  scopeid 0x20<link>
+        ether 00:00:00:00:00:06  txqueuelen 1000  (Ethernet)
+        RX packets 1  bytes 342 (342.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 6  bytes 1290 (1.2 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 90  bytes 7662 (7.4 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 90  bytes 7662 (7.4 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
